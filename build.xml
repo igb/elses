@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="elses" default="build" basedir=".">
+    <description>
+        simple example build file
+    </description>
+    <!-- set global properties for this build -->
+
+    <target name="init">
+        <property file="project.properties"/>
+    </target>
+
+    <target name="clean" depends="init">
+        <delete dir="${dist.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="build" depends="clean">
+
+        <javac srcdir="${src.dir}" destdir="${dist.dir}">
+
+            <classpath>
+               <fileset dir="${lib.dir}">
+                   <include name="**/*.jar"/>
+               </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+
+    <target name="dist" depends="build">
+        <zip file="elses.zip">
+            <fileset dir="${lib.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${dist.dir}">
+                <include name="**/*.class"/>
+                <include name="**/*.sh"/>
+            </fileset>
+        </zip>
+    </target>
+
+    </project>
