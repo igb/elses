@@ -16,7 +16,7 @@
 
     <target name="build" depends="clean">
 
-        <javac srcdir="${src.dir}" destdir="${dist.dir}">
+        <javac srcdir="${src.dir}" destdir="${dist.dir}" debug="on">
 
             <classpath>
                <fileset dir="${lib.dir}">
