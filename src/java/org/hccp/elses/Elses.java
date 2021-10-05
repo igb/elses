@@ -1,5 +1,7 @@
 package org.hccp.elses;
 
+import org.hccp.lang.AstPrinter;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -168,12 +170,28 @@ public class Elses {
         List<Token> tokens = scanner.scanTokens();
 
         Parser parser = new Parser(tokens);
+        boolean x = true;
+
+       while(x) {
+           Expr ast = parser.parse();
+           print(ast);
+       }
+
+
+
 
 
         for (int i = 0; i < tokens.size(); i++) {
             Token token = tokens.get(i);
             System.out.println(token);
         }
+    }
+
+    private static void print(Expr ast) {
+        System.out.println("***********");
+        AstPrinter astPrinter = new AstPrinter();
+        System.out.println(astPrinter.print(ast));
+        System.out.println("***********");
     }
 
     private static void printHelpMessage() {
@@ -218,6 +236,14 @@ public class Elses {
         String[] ruleParts = ruleString.split("->");
         Rule rule = new Rule(ruleParts[0], ruleParts[1]);
         return rule;
+    }
+
+    static void error(Token token, String message) {
+       if (token.type == TokenType.EOF) {
+           report(token.line, " at end", message);
+       } else {
+           report(token.line, " at '" + token.lexeme + "'", message);
+       }
     }
 
     static void error(int line, String message) {

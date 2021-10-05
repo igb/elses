@@ -2,7 +2,11 @@ package org.hccp.elses;
 
 import java.util.List;
 
+import static org.hccp.elses.TokenType.*;
+
 public class Parser {
+
+    private static class ParserError extends RuntimeException {};
 
     private final List<Token> tokens;
     private int current = 0;
@@ -12,7 +16,16 @@ public class Parser {
     }
 
 
+    Expr parse() {
+        try {
+            return expression();
+        } catch (ParserError error) {
+            return null;
+        }
+    }
 
+
+// control and postion methods....
 
     private Token previous() {
         return tokens.get(current - 1);
@@ -44,6 +57,56 @@ public class Parser {
     private boolean check(TokenType type) {
         if (isAtEnd()) return false;
         return peek().type == type;
+    }
+
+
+    // recursve descent parsing...
+
+
+    private Expr expression() {
+        return assignment();
+    }
+
+    private Expr assignment() {
+        Expr expr =  primary();
+        while (match(TokenType.THEN, TokenType.SEMICOLON)) {
+            Token operator = previous();
+            Expr right = primary();
+            expr = new Expr.Binary(expr, operator, right);
+
+        }
+        return expr;
+    }
+
+    private Expr primary() {
+        if (match(AXIOM)) return new Expr.Literal(AXIOM);
+        if (match(ANGLE)) return new Expr.Literal(ANGLE);
+        //commands
+        if (match(FORWARD)) return new Expr.Literal(FORWARD);
+        if (match(PEN_UP_FORWARD)) return new Expr.Literal(PEN_UP_FORWARD);
+        if (match(INCREMENT_ANGLE)) return new Expr.Literal(INCREMENT_ANGLE);
+        if (match(DECREMENT_ANGLE)) return new Expr.Literal(DECREMENT_ANGLE);
+        if (match(DOT)) return new Expr.Literal(DOT);
+        if (match(POP)) return new Expr.Literal(POP);
+        if (match(PUSH)) return new Expr.Literal(PUSH);
+
+
+
+
+
+        if (match(NUMBER, IDENTIFIER)) {
+            return new Expr.Literal(previous().literal);
+        }
+
+
+
+        throw error(peek(), "Expect expression.");
+
+    }
+
+    private ParserError error(Token token, String errorMessage) {
+        Elses.error(token, errorMessage);
+        return new ParserError();
     }
 
 

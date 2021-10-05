@@ -18,7 +18,8 @@ public class GenerateAst {
         String outputDir = args[0];
         defineAst(outputDir, "org.hccp.elses", "Expr", Arrays.asList(
                 "Binary: Expr left,Token operator,Expr right",
-                "Literal: Object value"
+                "Literal: Object value",
+                "LiteralList: Literal head, LiteralList tail"
         ));
     }
 
