@@ -1,27 +1,29 @@
 package org.hccp.elses;
 
-public class Rule {
-    private String input;
-    private String output;
+import java.util.List;
 
-    public Rule(String input, String output) {
+public class Rule {
+    private Expr.Literal input;
+    private List<Expr.Literal> output;
+
+    public Rule(Expr.Literal input, List<Expr.Literal> output) {
         this.input = input;
         this.output = output;
     }
 
-    public String getInput() {
+    public Expr.Literal getInput() {
         return input;
     }
 
-    public void setInput(String input) {
+    public void setInput(Expr.Literal input) {
         this.input = input;
     }
 
-    public String getOutput() {
+    public List<Expr.Literal> getOutput() {
         return output;
     }
 
-    public void setOutput(String output) {
+    public void setOutput(List<Expr.Literal> output) {
         this.output = output;
     }
 }

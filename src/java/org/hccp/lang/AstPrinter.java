@@ -24,6 +24,17 @@ public class AstPrinter implements Expr.Visitor<String> {
         return expr.value.toString();
     }
 
+    @Override
+    public String visitLiteralListExpr(Expr.LiteralList expr) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(expr.head.value);
+        if (expr.tail != null) {
+            builder.append(" ");
+            builder.append(expr.tail.accept(this));
+
+        }
+        return builder.toString();
+    }
 
 
     private String parenthesize(String name, Expr ... exprs) {

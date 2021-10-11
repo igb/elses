@@ -5,6 +5,7 @@ import org.hccp.lang.AstPrinter;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class Elses {
         private static final double DEFAULT_Y_POSITION = 100;
 
 
-    public static void main(String[]args) throws IOException {
+    public static void main(String[]args) throws Exception {
         int angleStep=-1;
         double lineLength=-1;
         double initialXPosition=-1;
@@ -100,7 +101,7 @@ public class Elses {
 
 
 
-        runFile(source);
+        runFile(source, context);
 
 
         System.out.println("parsing...");
@@ -113,7 +114,7 @@ public class Elses {
         while (true) {
             String rule = reader.readLine();
             if (rule == null) break;
-            rules.add(parseRule(rule));
+           //rules.add(parseRule(rule));
         }
 
 
@@ -141,16 +142,16 @@ public class Elses {
 
 
 
-    private static void runFile(String path) throws IOException {
+    private static void runFile(String path, Context context) throws Exception {
         byte[] bytes = Files.readAllBytes(Paths.get(path));
-        run(new String(bytes));
+        run(new String(bytes), context);
 
         if (hadError) System.exit(65);
 
     }
 
 
-    private static void runPrompt() throws IOException {
+    private static void runPrompt() throws Exception {
         InputStreamReader reader = new InputStreamReader(System.in);
         BufferedReader bufferedReader =  new BufferedReader(reader);
 
@@ -160,38 +161,112 @@ public class Elses {
             if (line == null) {
                 break;
             }
-            run(line);
+            run(line, new Context());
             hadError=false;
         }
     }
 
-    private static void run(String source) {
+    private static void run(String source, Context context) throws Exception {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
 
         Parser parser = new Parser(tokens);
+
+       List<Expr> expressions = new LinkedList<Expr>();
+
         boolean x = true;
 
        while(x) {
            Expr ast = parser.parse();
-           print(ast);
+
+           if (ast != null) {
+               expressions.add(ast);
+           } else {
+               break;
+           }
+
        }
 
 
-
-
-
-        for (int i = 0; i < tokens.size(); i++) {
-            Token token = tokens.get(i);
-            System.out.println(token);
+        for (int i = 0; i < expressions.size(); i++) {
+            Expr expr = expressions.get(i);
+            print(expr);
         }
+
+        Program program = compile2(expressions);
+        List<Expr.Literal> output = program.execute(2);
+        for (int i = 0; i < output.size(); i++) {
+            Expr expr = output.get(i);
+            print(expr);
+        }
+
+
+
+
+
+    }
+
+    private static Program compile2(List<Expr> expressions) throws Exception {
+        Iterator<Expr> iterator = expressions.iterator();
+        Axiom axiom = compileAxiom(iterator.next());
+        List<Rule> rules = compileRules(iterator);
+
+        Program program = new Program();
+        program.setAxiom(axiom);
+        program.setRules(rules);
+
+        return program;
+
+
+    }
+
+    private static List<Rule> compileRules(Iterator<Expr> iterator) {
+        List<Rule> rules = new LinkedList<>();
+        while (iterator.hasNext()) {
+            Expr next = iterator.next();
+            if (next instanceof Expr.Binary) {
+                Expr.Binary ruleExpression = (Expr.Binary)next;
+                Expr.Literal input = (Expr.Literal)ruleExpression.left;
+                List<Expr.Literal> output = literalListToList((Expr.LiteralList)ruleExpression.right);
+                Rule rule = new Rule(input, output);
+                rules.add(rule);
+            }
+        }
+        return rules;
+    }
+
+    private static List literalListToList(Expr.LiteralList literalList) {
+        return literalListToList(literalList, new LinkedList<Expr.Literal>());
+    }
+
+    private static List literalListToList(Expr.LiteralList literalList, LinkedList<Expr.Literal> list) {
+        list.add(literalList.head);
+        if (literalList.tail == null) {
+            return list;
+        }
+        return literalListToList(literalList.tail, list);
+    }
+
+    private static Axiom compileAxiom(Expr expr) throws Exception {
+        if (expr instanceof Expr.Binary) {
+            Expr.Binary binExpr = (Expr.Binary) expr;
+            Expr.Literal left = (Expr.Literal) binExpr.left;
+            Expr.Literal right = (Expr.Literal) binExpr.right;
+
+            if (TokenType.AXIOM.equals(left.value)) {
+                Axiom axiom = new Axiom(right);
+                return axiom;
+            }
+
+        }
+
+        throw new Exception("Invalid axiom.");
+
     }
 
     private static void print(Expr ast) {
-        System.out.println("***********");
         AstPrinter astPrinter = new AstPrinter();
         System.out.println(astPrinter.print(ast));
-        System.out.println("***********");
     }
 
     private static void printHelpMessage() {
@@ -215,8 +290,8 @@ public class Elses {
                 boolean matched = false;
                 for (int k = 0; k < rules.size(); k++) {
                     Rule rule = rules.get(k);
-                    char x = rule.getInput().toCharArray()[0];
-                    if (rule.getInput().toCharArray()[0] == programChar) {
+                    char x = rule.getInput().value.toString().toCharArray()[0];
+                    if (rule.getInput().value.toString().toCharArray()[0] == programChar) {
                         matched = true;
                         programBuffer.append(rule.getOutput());
                     }
@@ -232,11 +307,7 @@ public class Elses {
     }
 
 
-    public static Rule parseRule(String ruleString) {
-        String[] ruleParts = ruleString.split("->");
-        Rule rule = new Rule(ruleParts[0], ruleParts[1]);
-        return rule;
-    }
+
 
     static void error(Token token, String message) {
        if (token.type == TokenType.EOF) {

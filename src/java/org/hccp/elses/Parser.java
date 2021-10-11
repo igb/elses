@@ -68,14 +68,29 @@ public class Parser {
     }
 
     private Expr assignment() {
-        Expr expr =  primary();
-        while (match(TokenType.THEN, TokenType.SEMICOLON)) {
+        Expr expr =  list();
+        while (match(TokenType.THEN, COLON)) {
             Token operator = previous();
-            Expr right = primary();
-            expr = new Expr.Binary(expr, operator, right);
+            if (operator.type == COLON) {
+                Expr right = primary();
+                expr = new Expr.Binary(expr, operator, right);
+                if (match(NEWLINE)) {
+                    // do nothing...
+                    //todo: this is a bug in our grammar or something
+                }
+
+            } else if (operator.type == THEN){
+                 Expr right = list();
+                expr = new Expr.Binary(expr, operator, right);
+
+            }
 
         }
         return expr;
+    }
+
+    private Expr list() {
+        return new Expr.LiteralList((Expr.Literal) primary(), match(NEWLINE,COLON, THEN) ? null : (Expr.LiteralList) list());
     }
 
     private Expr primary() {

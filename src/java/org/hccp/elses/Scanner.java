@@ -45,7 +45,7 @@ public class Scanner {
         char c = advance();
         switch (c) {
             case '-':addToken(match('>') ? TokenType.THEN : TokenType.DECREMENT_ANGLE); break;
-            case ':': addToken(TokenType.SEMICOLON); break;
+            case ':': addToken(TokenType.COLON); break;
             case '+': addToken(TokenType.INCREMENT_ANGLE); break;
             case '[': addToken(TokenType.PUSH); break;
             case ']': addToken(TokenType.POP); break;
@@ -58,6 +58,7 @@ public class Scanner {
             case '\t':
                 break;
             case '\n':
+                addToken(TokenType.NEWLINE);
                 line++;
                 break;
             default:
@@ -107,7 +108,7 @@ public class Scanner {
         String text = source.substring(start, current);
         TokenType type = keywords.get(text);
         if (type == null) type = TokenType.IDENTIFIER;
-        addToken(type);
+        addToken(type, text);
     }
 
     private boolean isAlphaNumeric(char c) {

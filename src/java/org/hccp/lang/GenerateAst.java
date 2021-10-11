@@ -19,7 +19,7 @@ public class GenerateAst {
         defineAst(outputDir, "org.hccp.elses", "Expr", Arrays.asList(
                 "Binary: Expr left,Token operator,Expr right",
                 "Literal: Object value",
-                "LiteralList: Literal head, LiteralList tail"
+                "LiteralList: Literal head,LiteralList tail"
         ));
     }
 
@@ -31,7 +31,7 @@ public class GenerateAst {
         writer.println();
         writer.println("import java.util.List;");
         writer.println();
-        writer.println("abstract class " + baseName + "{");
+        writer.println("public abstract class " + baseName + "{");
 
         defineVisitor(writer, baseName, types);
 
@@ -47,7 +47,7 @@ public class GenerateAst {
         // the base accept() method
 
         writer.println();
-        writer.println(" abstract <R> R accept(Visitor<R> visitor);");
+        writer.println(" public abstract <R> R accept(Visitor<R> visitor);");
 
 
         writer.println("}");
@@ -56,7 +56,7 @@ public class GenerateAst {
     }
 
     private static void defineVisitor(PrintWriter writer, String baseName, List<String> types) {
-        writer.println("\tinterface Visitor<R> {");
+        writer.println("\tpublic interface Visitor<R> {");
 
         for (String type: types) {
             String typeName = type.split(":")[0].trim();
@@ -66,7 +66,7 @@ public class GenerateAst {
     }
 
     private static void defineType(PrintWriter writer, String baseName, String className, String fieldList) {
-        writer.println("    static class " + className + " extends " + baseName + " {");
+        writer.println("   public static class " + className + " extends " + baseName + " {");
 
        // constructor
 
@@ -85,7 +85,7 @@ public class GenerateAst {
         //Visitor pattern
         writer.println();
         writer.println("\t\t@Override");
-        writer.println("\t\t<R> R accept(Visitor<R> visitor) {");
+        writer.println("\t\tpublic <R> R accept(Visitor<R> visitor) {");
         writer.println("\t\t\treturn visitor.visit" + className + baseName + "(this);");
         writer.println("\t\t}");
 
@@ -94,7 +94,7 @@ public class GenerateAst {
 
         writer.println();
         for (String field : fields) {
-            writer.println("            final " + field + ";");
+            writer.println("            public final " + field + ";");
         }
 
         writer.println("    }");
