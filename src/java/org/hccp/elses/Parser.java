@@ -68,7 +68,7 @@ public class Parser {
     }
 
     private Expr assignment() {
-        Expr expr =  list();
+        Expr expr =  primary();
         while (match(TokenType.THEN, COLON)) {
             Token operator = previous();
             if (operator.type == COLON) {
