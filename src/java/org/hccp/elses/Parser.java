@@ -68,22 +68,17 @@ public class Parser {
     }
 
     private Expr assignment() {
-        Expr expr =  primary();
+        Expr expr = primary();
         while (match(TokenType.THEN, COLON)) {
             Token operator = previous();
-            if (operator.type == COLON) {
-                Expr right = primary();
+                Expr right = list();
                 expr = new Expr.Binary(expr, operator, right);
                 if (match(NEWLINE)) {
                     // do nothing...
+                    System.out.println("wut");
                     //todo: this is a bug in our grammar or something
                 }
 
-            } else if (operator.type == THEN){
-                 Expr right = list();
-                expr = new Expr.Binary(expr, operator, right);
-
-            }
 
         }
         return expr;

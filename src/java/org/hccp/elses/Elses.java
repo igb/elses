@@ -170,22 +170,7 @@ public class Elses {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
 
-        Parser parser = new Parser(tokens);
-
-       List<Expr> expressions = new LinkedList<Expr>();
-
-        boolean x = true;
-
-       while(x) {
-           Expr ast = parser.parse();
-
-           if (ast != null) {
-               expressions.add(ast);
-           } else {
-               break;
-           }
-
-       }
+        List<Expr> expressions = parse(tokens);
 
 
         for (int i = 0; i < expressions.size(); i++) {
@@ -204,6 +189,26 @@ public class Elses {
 
 
 
+    }
+
+    public static List<Expr> parse(List<Token> tokens) {
+        Parser parser = new Parser(tokens);
+
+        List<Expr> expressions = new LinkedList<Expr>();
+
+        boolean x = true;
+
+        while(x) {
+            Expr ast = parser.parse();
+
+            if (ast != null) {
+                expressions.add(ast);
+            } else {
+                break;
+            }
+
+        }
+        return expressions;
     }
 
     private static Program compile2(List<Expr> expressions) throws Exception {
@@ -225,17 +230,21 @@ public class Elses {
         while (iterator.hasNext()) {
             Expr next = iterator.next();
             if (next instanceof Expr.Binary) {
-                Expr.Binary ruleExpression = (Expr.Binary)next;
-                Expr.Literal input = (Expr.Literal)ruleExpression.left;
-                List<Expr.Literal> output = literalListToList((Expr.LiteralList)ruleExpression.right);
-                Rule rule = new Rule(input, output);
+                Rule rule = compileRule((Expr.Binary) next);
                 rules.add(rule);
             }
         }
         return rules;
     }
 
-    private static List literalListToList(Expr.LiteralList literalList) {
+    protected static Rule compileRule(Expr.Binary expr) {
+        Expr.Binary ruleExpression = expr;
+        Expr.Literal input = (Expr.Literal)ruleExpression.left;
+        List<Expr.Literal> output = literalListToList((Expr.LiteralList)ruleExpression.right);
+        return new Rule(input, output);
+    }
+
+    protected static List literalListToList(Expr.LiteralList literalList) {
         return literalListToList(literalList, new LinkedList<Expr.Literal>());
     }
 
@@ -251,10 +260,12 @@ public class Elses {
         if (expr instanceof Expr.Binary) {
             Expr.Binary binExpr = (Expr.Binary) expr;
             Expr.Literal left = (Expr.Literal) binExpr.left;
-            Expr.Literal right = (Expr.Literal) binExpr.right;
+            Expr.LiteralList right = (Expr.LiteralList) binExpr.right;
+
+            print(left);
 
             if (TokenType.AXIOM.equals(left.value)) {
-                Axiom axiom = new Axiom(right);
+                Axiom axiom = new Axiom(literalListToList(right));
                 return axiom;
             }
 
@@ -264,7 +275,7 @@ public class Elses {
 
     }
 
-    private static void print(Expr ast) {
+    public static void print(Expr ast) {
         AstPrinter astPrinter = new AstPrinter();
         System.out.println(astPrinter.print(ast));
     }

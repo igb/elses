@@ -27,6 +27,48 @@
     </target>
 
 
+    <target name="test" depends="build">
+
+        <javac srcdir="${testsrc.dir}" destdir="${dist.dir}" debug="on">
+
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="${libext.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="${dist.dir}">
+                    <include name="**/*"/>
+                </fileset>
+
+            </classpath>
+        </javac>
+
+        <junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="${libext.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <path path="${dist.dir}"/>
+
+            </classpath>
+
+            <formatter type="plain" usefile="false"/>
+
+            <batchtest>
+                <fileset dir="${testsrc.dir}" >
+                    <include name="**/*.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
+    </target>
+
+
     <target name="dist" depends="build">
         <zip file="elses.zip">
             <fileset dir="${lib.dir}">

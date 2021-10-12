@@ -30,7 +30,7 @@ public class Program {
 
     public List<Expr.Literal> execute(int iterations) {
         List<Expr.Literal> output = new LinkedList<>();
-        output.add(this.axiom.axiom);
+        output.addAll(this.axiom.axiom);
         for (int i=0; i < iterations; i++ ) {
             LinkedList<Expr.Literal> newOutput = new LinkedList<>();
             for (int j = 0; j < output.size(); j++) {
