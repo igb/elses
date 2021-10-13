@@ -211,7 +211,7 @@ public class Elses {
         return expressions;
     }
 
-    private static Program compile2(List<Expr> expressions) throws Exception {
+    public static Program compile2(List<Expr> expressions) throws Exception {
         Iterator<Expr> iterator = expressions.iterator();
         Axiom axiom = compileAxiom(iterator.next());
         List<Rule> rules = compileRules(iterator);
