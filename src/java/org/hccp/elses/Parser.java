@@ -96,6 +96,8 @@ public class Parser {
         if (match(PEN_UP_FORWARD)) return new Expr.Literal(PEN_UP_FORWARD);
         if (match(INCREMENT_ANGLE)) return new Expr.Literal(INCREMENT_ANGLE);
         if (match(DECREMENT_ANGLE)) return new Expr.Literal(DECREMENT_ANGLE);
+        if (match(LEFT_TURN)) return new Expr.Literal(LEFT_TURN);
+        if (match(RIGHT_TURN)) return new Expr.Literal(RIGHT_TURN);
         if (match(DOT)) return new Expr.Literal(DOT);
         if (match(POP)) return new Expr.Literal(POP);
         if (match(PUSH)) return new Expr.Literal(PUSH);

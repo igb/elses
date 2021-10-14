@@ -41,6 +41,7 @@ public class Elses {
         double lineLength=-1;
         double initialXPosition=-1;
         double initialYPosition=-1;
+        double dotRadius=-1;
         int iterations=-1;
         String source=null;
         String outputFile=null;
@@ -69,6 +70,10 @@ public class Elses {
                 case "-y":
                     initialYPosition = Double.parseDouble(args[++i]);
                     break;
+                case "--dot-radius":
+                case "-r":
+                    dotRadius = Double.parseDouble(args[++i]);
+                    break;
                 case "--iterations":
                 case "-i":
                     iterations = Integer.parseInt(args[++i]);
@@ -96,44 +101,23 @@ public class Elses {
         context.set(Context.CURRENT_X_POS, initialXPosition != -1 ? initialXPosition : DEFAULT_X_POSITION);
         context.set(Context.CURRENT_Y_POS, initialYPosition != -1 ? initialYPosition : DEFAULT_Y_POSITION);
         context.set(Context.LINE_LENGTH, lineLength != -1 ? lineLength : DEFAULT_LINE_LENGTH);
+        context.set(Context.DOT_RADIUS, dotRadius != -1 ? dotRadius : DEFAULT_LINE_LENGTH / 2);
+
+
+        context.set(Context.ITERATIONS, iterations);
 
 
 
 
 
-        runFile(source, context);
-
-
-        System.out.println("parsing...");
-        FileInputStream fis = new FileInputStream(source);
-        BufferedInputStream bis = new BufferedInputStream(fis);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(bis));
-        String axiom = reader.readLine();
-        List<Rule> rules = new LinkedList<Rule>();
-        System.out.println("parsing...");
-        while (true) {
-            String rule = reader.readLine();
-            if (rule == null) break;
-           //rules.add(parseRule(rule));
-        }
-
-
-
-
-        System.out.println("compiling...");
-        String program = compile(axiom, rules, iterations);
-
-        System.out.println("program = " + program);
-
-        System.out.println("interpreting...");
-
-        Interpeter interpreter = new Interpeter();
-        interpreter.intepret(program, context);
+        byte[] output = runFile(source, context);
 
         FileOutputStream fos = new FileOutputStream(outputFile);
-        fos.write(interpreter.getOutput().getBytes());
+        fos.write(output);
         fos.flush();
         fos.close();
+
+
 
 
 
@@ -142,12 +126,10 @@ public class Elses {
 
 
 
-    private static void runFile(String path, Context context) throws Exception {
+    private static byte[] runFile(String path, Context context) throws Exception {
         byte[] bytes = Files.readAllBytes(Paths.get(path));
-        run(new String(bytes), context);
-
         if (hadError) System.exit(65);
-
+        return run(new String(bytes), context);
     }
 
 
@@ -166,24 +148,22 @@ public class Elses {
         }
     }
 
-    private static void run(String source, Context context) throws Exception {
+    private static byte[] run(String source, Context context) throws Exception {
+
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
 
         List<Expr> expressions = parse(tokens);
 
 
-        for (int i = 0; i < expressions.size(); i++) {
-            Expr expr = expressions.get(i);
-            print(expr);
-        }
-
         Program program = compile2(expressions);
-        List<Expr.Literal> output = program.execute(2);
-        for (int i = 0; i < output.size(); i++) {
-            Expr expr = output.get(i);
-            print(expr);
-        }
+        List<Expr.Literal> ilr = program.execute((Integer) context.get(Context.ITERATIONS));
+
+        Backend backend = new SvgBackend();
+        backend.intepret(ilr, context);
+        return backend.getOutput();
+
+
 
 
 

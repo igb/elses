@@ -1,2 +1,2 @@
-F+F+F+F
+AXIOM: F+F+F+F
 F->FF+F-F+F+FF

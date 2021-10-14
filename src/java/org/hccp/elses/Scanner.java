@@ -44,9 +44,9 @@ public class Scanner {
     private void scanToken() {
         char c = advance();
         switch (c) {
-            case '-':addToken(match('>') ? TokenType.THEN : TokenType.DECREMENT_ANGLE); break;
+            case '-':addToken(match('>') ? TokenType.THEN : TokenType.RIGHT_TURN); break;
             case ':': addToken(TokenType.COLON); break;
-            case '+': addToken(TokenType.INCREMENT_ANGLE); break;
+            case '+': addToken(TokenType.LEFT_TURN); break;
             case '[': addToken(TokenType.PUSH); break;
             case ']': addToken(TokenType.POP); break;
             case 'F': addToken(TokenType.FORWARD); break;
