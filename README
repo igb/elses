@@ -1,4 +1,17 @@
-A Java-based implementation of an L-System generator.  
+A Java-based implementation of an L-System generator.
+
+To build using Ant:
+
+    ant clean build
+    
+    
+To run from the build directory:
+
+java -cp dist org.hccp.elses.Elses <options> <input-file> <output-file>
+
+
+Options:
+
 
 --angle,-a ANGLE			the angle to increment/decrement when interpreting '+' or '-' commands.
 
@@ -13,3 +26,11 @@ A Java-based implementation of an L-System generator.
 --y-position,-y INITIAL Y POSITION			the initial y position from which to begin drawing
 
 --dot-radius,-r DOT RADIUS			the radius of the circle drawn by a '@' command
+
+
+
+
+Example:
+
+java -cp dist org.hccp.elses.Elses -i 2 -a 10 -r 5 -l 25 -x 150 -y 50 samples/test-003.txt /tmp/lsys-ploy.svg
+
