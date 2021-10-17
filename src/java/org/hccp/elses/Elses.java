@@ -37,6 +37,8 @@ public class Elses {
 
 
     public static void main(String[]args) throws Exception {
+        String argumentString = reconstructArgumentString(args);
+
         int angleStep=-1;
         double lineLength=-1;
         double initialXPosition=-1;
@@ -105,6 +107,7 @@ public class Elses {
 
 
         context.set(Context.ITERATIONS, iterations);
+        context.set(Context.ARGUMENT_STRING, argumentString);
 
 
 
@@ -124,6 +127,15 @@ public class Elses {
 
     }
 
+    private static String reconstructArgumentString(String[] args) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            sb.append(arg);
+            sb.append(" ");
+        }
+        return sb.toString().trim();
+    }
 
 
     private static byte[] runFile(String path, Context context) throws Exception {

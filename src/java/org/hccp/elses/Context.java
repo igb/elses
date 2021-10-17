@@ -11,6 +11,7 @@ public class Context {
     public static final String CURRENT_Y_POS = "current-y-position";
     public static final String ITERATIONS = "iterations";
     public static final String DOT_RADIUS = "dot-radius";
+    public static final String ARGUMENT_STRING = "argument-string";
 
 
     private LinkedList<Map> contexts = new LinkedList<Map>();
