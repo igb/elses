@@ -1,1 +1,15 @@
 A Java-based implementation of an L-System generator.  
+
+--angle,-a ANGLE			the angle to increment/decrement when interpreting '+' or '-' commands.
+
+--help,-h			prints this message.
+
+--iterations,-i ITERATIONS			the number of rule-application iterations.
+
+--line-length,-l LINE LENGTH			the length of each pen move 'F'.
+
+--x-position,-x INITIAL X POSITION			the initial x position from which to begin drawing
+
+--y-position,-y INITIAL Y POSITION			the initial y position from which to begin drawing
+
+--dot-radius,-r DOT RADIUS			the radius of the circle drawn by a '@' command
