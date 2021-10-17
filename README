@@ -44,3 +44,9 @@ Example:
 
 java -cp dist org.hccp.elses.Elses -i 2 -a 10 -r 5 -l 25 -x 150 -y 50 samples/test-003.txt /tmp/lsys-plot.svg
 
+
+
+
+Credits:
+
+A bunch of the parsing code and structure is derived from Lox and Robert Nystrom's wonderful book "Crafting Interpreters".
