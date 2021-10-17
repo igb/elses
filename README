@@ -42,5 +42,5 @@ Options:
 
 Example:
 
-java -cp dist org.hccp.elses.Elses -i 2 -a 10 -r 5 -l 25 -x 150 -y 50 samples/test-003.txt /tmp/lsys-ploy.svg
+java -cp dist org.hccp.elses.Elses -i 2 -a 10 -r 5 -l 25 -x 150 -y 50 samples/test-003.txt /tmp/lsys-plot.svg
 
