@@ -1,13 +1,23 @@
 A Java-based implementation of an L-System generator.
 
-To build using Ant:
+
+
+
+An example L-System "program":
+
+AXIOM: F
+F -> FF[[-FFF@]++FF@]
+
+
+
+To build the Elses interpreter using Ant:
 
     ant clean build
     
     
 To run from the build directory:
 
-java -cp dist org.hccp.elses.Elses <options> <input-file> <output-file>
+java -cp dist org.hccp.elses.Elses <options> <lsys-program-input-file> <output-file>
 
 
 Options:
