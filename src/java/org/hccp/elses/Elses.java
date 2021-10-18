@@ -168,7 +168,7 @@ public class Elses {
         List<Expr> expressions = parse(tokens);
 
 
-        Program program = compile2(expressions);
+        Program program = compile(expressions);
         List<Expr.Literal> ilr = program.execute((Integer) context.get(Context.ITERATIONS));
 
         Backend backend = new SvgBackend();
@@ -203,7 +203,7 @@ public class Elses {
         return expressions;
     }
 
-    public static Program compile2(List<Expr> expressions) throws Exception {
+    public static Program compile(List<Expr> expressions) throws Exception {
         Iterator<Expr> iterator = expressions.iterator();
         Axiom axiom = compileAxiom(iterator.next());
         List<Rule> rules = compileRules(iterator);
@@ -274,40 +274,18 @@ public class Elses {
 
     private static void printHelpMessage() {
         StringBuffer sb = new StringBuffer();
-        sb.append("--angle,-a ANGLE\t\t\tthe angle to increment/decrement when interpreting '+' or '-' commands.\n");
-        sb.append("--help,-h\t\t\tprints this message.\n");
-        sb.append("--iterations,-i ITERATIONS\t\t\tthe number of rule-application iterations.\n");
+        sb.append("--angle,-a ANGLE\t\t\tthe angle to increment/decrement when interpreting '+' or '-' commands.\n\n");
+        sb.append("--help,-h\t\t\tprints this message.\n\n");
+        sb.append("--iterations,-i ITERATIONS\t\t\tthe number of rule-application iterations.\n\n");
+        sb.append("--line-length,-l LINE LENGTH\t\t\tthe length of each pen move 'F'.\n\n");
+        sb.append("--x-position,-x INITIAL X POSITION\t\t\tthe initial x position from which to begin drawing\n\n");
+        sb.append("--y-position,-y INITIAL Y POSITION\t\t\tthe initial y position from which to begin drawing\n\n");
+        sb.append("--dot-radius,-r DOT RADIUS\t\t\tthe radius of the circle drawn by a '@' command\n\n");
 
 
         System.out.println(sb.toString());
     }
 
-    public static String compile(String axiom, List<Rule> rules, int iterations) {
-        String program = axiom;
-
-        for (int i = 0; i < iterations; i++) {
-            StringBuffer programBuffer = new StringBuffer();
-            char[] programChars = program.toCharArray();
-            for (int j = 0; j < programChars.length; j++) {
-                char programChar = programChars[j];
-                boolean matched = false;
-                for (int k = 0; k < rules.size(); k++) {
-                    Rule rule = rules.get(k);
-                    char x = rule.getInput().value.toString().toCharArray()[0];
-                    if (rule.getInput().value.toString().toCharArray()[0] == programChar) {
-                        matched = true;
-                        programBuffer.append(rule.getOutput());
-                    }
-                }
-                if (!matched) {
-                    programBuffer.append(programChar);
-                }
-            }
-            program = programBuffer.toString();
-
-        }
-        return program;
-    }
 
 
 

@@ -9,6 +9,16 @@ AXIOM: F
 F -> FF[[-FFF@]++FF@]
 
 
+Supported instructions:
+
+
+F	  move pen forward and draw a line
+f	  move pen forward w/o drawing a line
++	  turn left by default degrees
+-	  turn right by default degrees
+[	  push current state (x/y position, angle) on to the context stack
+]	  pop context from stack and discard/replace current state (x/y postion, angle)
+@	  draw a 'dot' with a specified radius (default is 1/2 current line length) 
 
 To build the Elses interpreter using Ant:
 
@@ -23,19 +33,21 @@ java -cp dist org.hccp.elses.Elses <options> <lsys-program-input-file> <output-f
 Options:
 
 
+
+
 --angle,-a ANGLE			the angle to increment/decrement when interpreting '+' or '-' commands.
 
 --help,-h			prints this message.
 
 --iterations,-i ITERATIONS			the number of rule-application iterations.
 
---line-length,-l LINE LENGTH			the length of each pen move 'F'.
+--line-length,-l LINE_LENGTH			the length of each pen move 'F'.
 
---x-position,-x INITIAL X POSITION			the initial x position from which to begin drawing
+--x-position,-x INITIAL_X_POSITION			the initial x position from which to begin drawing
 
---y-position,-y INITIAL Y POSITION			the initial y position from which to begin drawing
+--y-position,-y INITIAL_Y_POSITION			the initial y position from which to begin drawing
 
---dot-radius,-r DOT RADIUS			the radius of the circle drawn by a '@' command
+--dot-radius,-r DOT_RADIUS			the radius of the circle drawn by a '@' command
 
 
 

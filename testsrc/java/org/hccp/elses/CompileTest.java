@@ -12,7 +12,7 @@ public class CompileTest {
         Scanner s = new Scanner(ScannerTest.SOURCE_001);
         List<Token> tokens = s.scanTokens();
         List<Expr> exprs = Elses.parse(tokens);
-        Program program = Elses.compile2(exprs);
+        Program program = Elses.compile(exprs);
         List<Expr.Literal> axiom = program.getAxiom().axiom;
         assertEquals("Expected an axiom with one literal.", 1, axiom.size());
         assertEquals("Should be a forward literal.", TokenType.FORWARD, axiom.get(0).value);

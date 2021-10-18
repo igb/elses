@@ -13,7 +13,7 @@ public class ProgramTest {
         Scanner s = new Scanner(ScannerTest.SOURCE_001);
         List<Token> tokens = s.scanTokens();
         List<Expr> exprs = Elses.parse(tokens);
-        Program program = Elses.compile2(exprs);
+        Program program = Elses.compile(exprs);
         List<Expr.Literal> output1 = program.execute(1);
         List<Expr.Literal> output3 =program.execute(3);
         List<Expr.Literal> output5 =program.execute(5);
