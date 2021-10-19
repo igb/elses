@@ -3,6 +3,10 @@ package org.hccp.elses;
 import java.util.*;
 
 public class Context {
+
+    Random r = new Random();
+
+
     //CONTEXT CONSTANTS
     public static final String ANGLE_STEP = "angle-step";
     public static final String CURRENT_DIRECTION = "current-angle";
@@ -12,6 +16,9 @@ public class Context {
     public static final String ITERATIONS = "iterations";
     public static final String DOT_RADIUS = "dot-radius";
     public static final String ARGUMENT_STRING = "argument-string";
+    public static final String RANDOMIZE_ANGLE_STEP = "randomize-angle-step";
+    public static final String ANGLE_STEP_LOWER_LIMIT = "angle-step-lower-limit";
+    public static final String ANGLE_STEP_UPPER_LIMIT = "angle-step-upper-limit";
 
 
     private LinkedList<Map> contexts = new LinkedList<Map>();
@@ -58,7 +65,12 @@ public class Context {
     }
 
     public int getAngleStep() {
-        return (int)this.get(ANGLE_STEP);
+        System.out.println((boolean)this.get(RANDOMIZE_ANGLE_STEP));
+        if ((boolean)this.get(RANDOMIZE_ANGLE_STEP)) {
+          return ((int)this.get(ANGLE_STEP_LOWER_LIMIT) + r.nextInt((int)this.get(ANGLE_STEP_UPPER_LIMIT) - (int)this.get(ANGLE_STEP_LOWER_LIMIT)));
+        } else {
+            return (int)this.get(ANGLE_STEP);
+        }
     }
 
     public double getCurrentLineLength() {

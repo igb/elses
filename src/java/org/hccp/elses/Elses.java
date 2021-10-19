@@ -31,15 +31,21 @@ public class Elses {
     public static final char SWAP = '&'; // Swap the meaning of + and -
     public static final char DECR_ANGLE = '('; // Decrement turning angle by turning angle increment
     public static final char INCR_ANGLE = ')'; // Increment turning angle by turning angle increment
-    public static final double DEFAULT_LINE_LENGTH = 10;
-        private static final double DEFAULT_X_POSITION = 100;
-        private static final double DEFAULT_Y_POSITION = 100;
 
+    public static final double DEFAULT_LINE_LENGTH = 10;
+    public static final double DEFAULT_X_POSITION = 150;
+    public static final double DEFAULT_Y_POSITION = 25;
+    public static final int DEFAULT_ANGLE_STEP = 45;
 
     public static void main(String[]args) throws Exception {
         String argumentString = reconstructArgumentString(args);
 
         int angleStep=-1;
+        int angleStepLowerLimit = -1;
+        int angleStepUpperLimit = -1;
+        boolean randomizeAngleStep = false;
+
+
         double lineLength=-1;
         double initialXPosition=-1;
         double initialYPosition=-1;
@@ -58,7 +64,14 @@ public class Elses {
             switch(arg) {
                 case "--angle":
                 case "-a":
-                    angleStep = Integer.parseInt(args[++i]);
+                    String angleArg = args[++i];
+                    if (angleArg.indexOf("-") > 0) {
+                        angleStepLowerLimit = Integer.parseInt(angleArg.split("-")[0]);
+                        angleStepUpperLimit = Integer.parseInt(angleArg.split("-")[1]);
+                        randomizeAngleStep=true;
+                    } else {
+                        angleStep = Integer.parseInt(angleArg);
+                    }
                     break;
                 case "--line-length":
                 case "-l":
@@ -99,11 +112,22 @@ public class Elses {
         Context context = new Context();
         context.set(Context.CURRENT_DIRECTION, 90);
 
-        context.set(Context.ANGLE_STEP, angleStep);
+        context.set(Context.ANGLE_STEP, angleStep != -1 ? angleStep : DEFAULT_ANGLE_STEP);
+
+        if (randomizeAngleStep) {
+            System.out.println("HERE!");
+            context.set(Context.RANDOMIZE_ANGLE_STEP, true);
+            context.set(Context.ANGLE_STEP_LOWER_LIMIT, angleStepLowerLimit);
+            context.set(Context.ANGLE_STEP_UPPER_LIMIT, angleStepUpperLimit);
+
+        } else {
+            context.set(Context.RANDOMIZE_ANGLE_STEP, false);
+        }
+
         context.set(Context.CURRENT_X_POS, initialXPosition != -1 ? initialXPosition : DEFAULT_X_POSITION);
         context.set(Context.CURRENT_Y_POS, initialYPosition != -1 ? initialYPosition : DEFAULT_Y_POSITION);
         context.set(Context.LINE_LENGTH, lineLength != -1 ? lineLength : DEFAULT_LINE_LENGTH);
-        context.set(Context.DOT_RADIUS, dotRadius != -1 ? dotRadius : DEFAULT_LINE_LENGTH / 2);
+        context.set(Context.DOT_RADIUS, dotRadius != -1 ? dotRadius : lineLength != -1 ? lineLength : DEFAULT_LINE_LENGTH / 2);
 
 
         context.set(Context.ITERATIONS, iterations);
@@ -254,8 +278,6 @@ public class Elses {
             Expr.Literal left = (Expr.Literal) binExpr.left;
             Expr.LiteralList right = (Expr.LiteralList) binExpr.right;
 
-            print(left);
-
             if (TokenType.AXIOM.equals(left.value)) {
                 Axiom axiom = new Axiom(literalListToList(right));
                 return axiom;
@@ -274,20 +296,52 @@ public class Elses {
 
     private static void printHelpMessage() {
         StringBuffer sb = new StringBuffer();
-        sb.append("--angle,-a ANGLE\t\t\tthe angle to increment/decrement when interpreting '+' or '-' commands.\n\n");
-        sb.append("--help,-h\t\t\tprints this message.\n\n");
-        sb.append("--iterations,-i ITERATIONS\t\t\tthe number of rule-application iterations.\n\n");
-        sb.append("--line-length,-l LINE LENGTH\t\t\tthe length of each pen move 'F'.\n\n");
-        sb.append("--x-position,-x INITIAL X POSITION\t\t\tthe initial x position from which to begin drawing\n\n");
-        sb.append("--y-position,-y INITIAL Y POSITION\t\t\tthe initial y position from which to begin drawing\n\n");
-        sb.append("--dot-radius,-r DOT RADIUS\t\t\tthe radius of the circle drawn by a '@' command\n\n");
+        sb.append(formatHelpMessage("--angle,-a ANGLE", "The angle to increment/decrement when interpreting '+' or '-' commands." +
+                " A range of angle values can be given for the interpreter to randomly chooose from at each step by using the form of 'n-m'." +
+                " For example the argument -a 20-35 would allow the interpreter to choose values between 20 degrees and 35 degrees at each step. The default value, if no angle or range is passed via this argument, is 45 degrees."));
+        sb.append(formatHelpMessage("--help,-h", "Prints this message."));
+        sb.append(formatHelpMessage("--iterations,-i ITERATIONS", "The number of rule-application iterations."));
+        sb.append(formatHelpMessage("--line-length,-l LINE_LENGTH", "The length of each pen move 'F'."));
+        sb.append(formatHelpMessage("--x-position,-x INITIAL_X_POSITION", "The initial x position from which to begin drawing. The default is 150 (the center point for a landscape-oriented A3 paper."));
+        sb.append(formatHelpMessage("--y-position,-y INITIAL_Y_POSITION", "The initial y position from which to begin drawing. The default is 25."));
+        sb.append(formatHelpMessage("--dot-radius,-r DOT_RADIUS", "The radius of the circle drawn by a '@' command."));
 
 
         System.out.println(sb.toString());
     }
 
+    private static String formatHelpMessage(String command, String message) {
+        return formatHelpMessage(command, message, 80);
+    }
+
+    private static String formatHelpMessage(String command, String message, int lineLength) {
+        StringBuffer sb = new StringBuffer();
+        String padding = "     ";
+
+        int indentLength = command.length() + padding.length();
+        String[] words = message.split(" ");
 
 
+        StringBuffer currentLine = new StringBuffer(lineLength);
+        currentLine.append(command + padding);
+
+        for (int i = 0; i < words.length; i++) {
+
+
+            if (currentLine.length() + words[i].length() + 1 > lineLength) {
+                currentLine.append("\n");
+                sb.append(currentLine);
+                currentLine = new StringBuffer(lineLength);
+                for (int j = 0; j < indentLength; j++) {
+                    currentLine.append(" ");
+                }
+            }
+            currentLine.append(" " + words[i]);
+        }
+
+        sb.append(currentLine + "\n");
+        return sb.toString() + "\n";
+    }
 
 
     static void error(Token token, String message) {

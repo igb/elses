@@ -65,10 +65,10 @@ public class SvgBackend extends Backend {
                         context.pop();
                         break;
                     case LEFT_TURN:
-                        System.out.println("turn left by " + context.get(Context.ANGLE_STEP) + " deg...new direction is " + calculateLeftTurnAngle(context));
+                        System.out.println("turn left by " + context.getAngleStep() + " deg...new direction is " + calculateLeftTurnAngle(context));
                         break;
                     case RIGHT_TURN:
-                        System.out.println("turn right by " + context.get(Context.ANGLE_STEP) + " deg...new direction is " + calculateRightTurnAngle(context));
+                        System.out.println("turn right by " + context.getAngleStep() + " deg...new direction is " + calculateRightTurnAngle(context));
                         break;
                     default:
                         System.out.println("unsupported instruction: " + value);

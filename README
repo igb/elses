@@ -32,22 +32,29 @@ java -cp dist org.hccp.elses.Elses <options> <lsys-program-input-file> <output-f
 
 Options:
 
+--angle,-a ANGLE      The angle to increment/decrement when interpreting '+' or
+                      '-' commands. A range of angle values can be given for the
+                      interpreter to randomly chooose from at each step by using
+                      the form of 'n-m'. For example the argument -a 20-35 would
+                      allow the interpreter to choose values between 20 degrees
+                      and 35 degrees at each step. The default value, if no
+                      angle or range is passed via this argument, is 45 degrees.
 
+--help,-h      Prints this message.
 
+--iterations,-i ITERATIONS      The number of rule-application iterations.
 
---angle,-a ANGLE			the angle to increment/decrement when interpreting '+' or '-' commands.
+--line-length,-l LINE_LENGTH      The length of each pen move 'F'.
 
---help,-h			prints this message.
+--x-position,-x INITIAL_X_POSITION      The initial x position from which to
+                                        begin drawing. The default is 150 (the
+                                        center point for a landscape-oriented A3
+                                        paper.
 
---iterations,-i ITERATIONS			the number of rule-application iterations.
+--y-position,-y INITIAL_Y_POSITION      The initial y position from which to
+                                        begin drawing. The default is 25.
 
---line-length,-l LINE_LENGTH			the length of each pen move 'F'.
-
---x-position,-x INITIAL_X_POSITION			the initial x position from which to begin drawing
-
---y-position,-y INITIAL_Y_POSITION			the initial y position from which to begin drawing
-
---dot-radius,-r DOT_RADIUS			the radius of the circle drawn by a '@' command
+--dot-radius,-r DOT_RADIUS      The radius of the circle drawn by a '@' command.
 
 
 
