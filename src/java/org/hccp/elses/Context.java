@@ -20,6 +20,10 @@ public class Context {
     public static final String ANGLE_STEP_LOWER_LIMIT = "angle-step-lower-limit";
     public static final String ANGLE_STEP_UPPER_LIMIT = "angle-step-upper-limit";
 
+    public static final String RANDOMIZE_LINE_LENGTH = "randomize-line-length";
+    public static final String LINE_LENGTH_LOWER_LIMIT = "line-length-lower-limit";
+    public static final String LINE_LENGTH_UPPER_LIMIT = "line-length-upper-limit";
+
 
     private LinkedList<Map> contexts = new LinkedList<Map>();
 
@@ -65,7 +69,6 @@ public class Context {
     }
 
     public int getAngleStep() {
-        System.out.println((boolean)this.get(RANDOMIZE_ANGLE_STEP));
         if ((boolean)this.get(RANDOMIZE_ANGLE_STEP)) {
           return ((int)this.get(ANGLE_STEP_LOWER_LIMIT) + r.nextInt((int)this.get(ANGLE_STEP_UPPER_LIMIT) - (int)this.get(ANGLE_STEP_LOWER_LIMIT)));
         } else {
@@ -74,7 +77,11 @@ public class Context {
     }
 
     public double getCurrentLineLength() {
-        return (double)this.get(LINE_LENGTH);
+        if ((boolean)this.get(RANDOMIZE_LINE_LENGTH)) {
+            return ((double)this.get(LINE_LENGTH_LOWER_LIMIT) + r.nextDouble((double)this.get(LINE_LENGTH_UPPER_LIMIT) - (double)this.get(LINE_LENGTH_LOWER_LIMIT)));
+        } else {
+           return (double) this.get(LINE_LENGTH);
+        }
     }
 
     public double getCurrentX() {

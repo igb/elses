@@ -44,7 +44,14 @@ Options:
 
 --iterations,-i ITERATIONS      The number of rule-application iterations.
 
---line-length,-l LINE_LENGTH      The length of each pen move 'F'.
+--line-length,-l LINE_LENGTH      The length of each pen move 'F'. A range of
+                                  line length values can be given for the
+                                  interpreter to randomly chooose from at each
+                                  step by using the form of 'n-m'. For example
+                                  the argument -l 2-10 would allow the
+                                  interpreter to choose values between 2 and 10
+                                  at each step. If no line length is specified,
+                                  a default line length of 10 will be used.
 
 --x-position,-x INITIAL_X_POSITION      The initial x position from which to
                                         begin drawing. The default is 150 (the
@@ -55,6 +62,8 @@ Options:
                                         begin drawing. The default is 25.
 
 --dot-radius,-r DOT_RADIUS      The radius of the circle drawn by a '@' command.
+                                If no radius is selected, a default radius of
+                                1/2 of the current line length will be used.
 
 
 

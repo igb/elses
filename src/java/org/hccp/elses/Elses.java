@@ -47,6 +47,11 @@ public class Elses {
 
 
         double lineLength=-1;
+        double lineLengthLowerLimit = -1;
+        double lineLengthUpperLimit = -1;
+        boolean randomizeLineLength = false;
+
+
         double initialXPosition=-1;
         double initialYPosition=-1;
         double dotRadius=-1;
@@ -75,7 +80,14 @@ public class Elses {
                     break;
                 case "--line-length":
                 case "-l":
-                    lineLength = Double.parseDouble(args[++i]);
+                    String lineArg = args[++i];
+                    if (lineArg.indexOf("-") > 0) {
+                        lineLengthLowerLimit = Double.parseDouble(lineArg.split("-")[0]);
+                        lineLengthUpperLimit = Double.parseDouble(lineArg.split("-")[1]);
+                        randomizeLineLength=true;
+                    } else {
+                        lineLength = Double.parseDouble(lineArg);
+                    }
                     break;
                 case "--x-position":
                 case "-x":
@@ -115,7 +127,6 @@ public class Elses {
         context.set(Context.ANGLE_STEP, angleStep != -1 ? angleStep : DEFAULT_ANGLE_STEP);
 
         if (randomizeAngleStep) {
-            System.out.println("HERE!");
             context.set(Context.RANDOMIZE_ANGLE_STEP, true);
             context.set(Context.ANGLE_STEP_LOWER_LIMIT, angleStepLowerLimit);
             context.set(Context.ANGLE_STEP_UPPER_LIMIT, angleStepUpperLimit);
@@ -124,9 +135,22 @@ public class Elses {
             context.set(Context.RANDOMIZE_ANGLE_STEP, false);
         }
 
+
+        context.set(Context.LINE_LENGTH, lineLength != -1 ? lineLength : DEFAULT_LINE_LENGTH);
+
+
+        if (randomizeLineLength) {
+            context.set(Context.RANDOMIZE_LINE_LENGTH, true);
+            context.set(Context.LINE_LENGTH_LOWER_LIMIT, lineLengthLowerLimit);
+            context.set(Context.LINE_LENGTH_UPPER_LIMIT, lineLengthUpperLimit);
+
+        } else {
+            context.set(Context.RANDOMIZE_LINE_LENGTH, false);
+        }
+
+
         context.set(Context.CURRENT_X_POS, initialXPosition != -1 ? initialXPosition : DEFAULT_X_POSITION);
         context.set(Context.CURRENT_Y_POS, initialYPosition != -1 ? initialYPosition : DEFAULT_Y_POSITION);
-        context.set(Context.LINE_LENGTH, lineLength != -1 ? lineLength : DEFAULT_LINE_LENGTH);
         context.set(Context.DOT_RADIUS, dotRadius != -1 ? dotRadius : lineLength != -1 ? lineLength : DEFAULT_LINE_LENGTH / 2);
 
 
@@ -301,10 +325,12 @@ public class Elses {
                 " For example the argument -a 20-35 would allow the interpreter to choose values between 20 degrees and 35 degrees at each step. The default value, if no angle or range is passed via this argument, is 45 degrees."));
         sb.append(formatHelpMessage("--help,-h", "Prints this message."));
         sb.append(formatHelpMessage("--iterations,-i ITERATIONS", "The number of rule-application iterations."));
-        sb.append(formatHelpMessage("--line-length,-l LINE_LENGTH", "The length of each pen move 'F'."));
+        sb.append(formatHelpMessage("--line-length,-l LINE_LENGTH", "The length of each pen move 'F'." +
+                " A range of line length values can be given for the interpreter to randomly chooose from at each step by using the form of 'n-m'." +
+                " For example the argument -l 2-10 would allow the interpreter to choose values between 2 and 10 at each step. If no line length is specified, a default line length of 10 will be used."));
         sb.append(formatHelpMessage("--x-position,-x INITIAL_X_POSITION", "The initial x position from which to begin drawing. The default is 150 (the center point for a landscape-oriented A3 paper."));
         sb.append(formatHelpMessage("--y-position,-y INITIAL_Y_POSITION", "The initial y position from which to begin drawing. The default is 25."));
-        sb.append(formatHelpMessage("--dot-radius,-r DOT_RADIUS", "The radius of the circle drawn by a '@' command."));
+        sb.append(formatHelpMessage("--dot-radius,-r DOT_RADIUS", "The radius of the circle drawn by a '@' command. If no radius is selected, a default radius of 1/2 of the current line length will be used."));
 
 
         System.out.println(sb.toString());
