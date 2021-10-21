@@ -14,23 +14,6 @@ public class Elses {
     private static boolean hadError = false;
 
 
-    public static final char FWD = 'F'; // Move forward by line length drawing a line
-    public static final char PU_FWD ='f'; // Move forward by line length without drawing a line
-    public static final char LT = '+'; // Turn left by turning angle
-    public static final char RT = '-'; //Turn right by turning angle
-    public static final char REV = '|';	// Reverse direction (ie: turn by 180 degrees)
-    public static final char PUSH = '['; // Push current drawing state onto stack
-    public static final char POP= ']'; //  Pop current drawing state from the stack
-    public static final char INCR= '#'; // Increment the line width by line width increment
-    public static final char DECR = '!'; // Decrement the line width by line width increment
-    public static final char DOT = '@'; // Draw a dot with line width radius
-    public static final char OPEN_POLY = '{'; // Open a polygon
-    public static final char CLOSE_POLY = '}'; // Close a polygon and fill it with fill colour
-    public static final char MULTIPLY_LINE_LENGTH = '>'; // Multiply the line length by the line length scale factor
-    public static final char DIVIDE_LINE_LENGTH = '<'; // Divide the line length by the line length scale factor
-    public static final char SWAP = '&'; // Swap the meaning of + and -
-    public static final char DECR_ANGLE = '('; // Decrement turning angle by turning angle increment
-    public static final char INCR_ANGLE = ')'; // Increment turning angle by turning angle increment
 
     public static final double DEFAULT_LINE_LENGTH = 10;
     public static final double DEFAULT_X_POSITION = 150;
