@@ -24,6 +24,11 @@ public class Context {
     public static final String LINE_LENGTH_LOWER_LIMIT = "line-length-lower-limit";
     public static final String LINE_LENGTH_UPPER_LIMIT = "line-length-upper-limit";
 
+    public static final String HEIGHT = "height";
+    public static final String WIDTH = "width";
+
+
+
 
     private LinkedList<Map> contexts = new LinkedList<Map>();
 

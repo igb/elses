@@ -11,6 +11,8 @@ import java.util.List;
 
 public class Elses {
 
+
+
     private static boolean hadError = false;
 
 
@@ -19,6 +21,8 @@ public class Elses {
     public static final double DEFAULT_X_POSITION = 150;
     public static final double DEFAULT_Y_POSITION = 25;
     public static final int DEFAULT_ANGLE_STEP = 45;
+    private static final double DEFAULT_HEIGHT = 420.0;
+    private static final double DEFAULT_WIDTH = 291.0;
 
     public static void main(String[]args) throws Exception {
         String argumentString = reconstructArgumentString(args);
@@ -28,6 +32,8 @@ public class Elses {
         int angleStepUpperLimit = -1;
         boolean randomizeAngleStep = false;
 
+        double height = -1;
+        double width = -1;
 
         double lineLength=-1;
         double lineLengthLowerLimit = -1;
@@ -84,6 +90,13 @@ public class Elses {
                 case "-r":
                     dotRadius = Double.parseDouble(args[++i]);
                     break;
+                case "--width":
+                case "-w":
+                    width = Double.parseDouble(args[++i]);
+                    break;
+                case "--height":
+                    height = Double.parseDouble(args[++i]);
+                    break;
                 case "--iterations":
                 case "-i":
                     iterations = Integer.parseInt(args[++i]);
@@ -106,6 +119,12 @@ public class Elses {
 
         Context context = new Context();
         context.set(Context.CURRENT_DIRECTION, 90);
+
+        context.set(Context.HEIGHT, height != -1 ? height : DEFAULT_HEIGHT);
+        context.set(Context.WIDTH, width != -1 ? width : DEFAULT_WIDTH);
+
+
+
 
         context.set(Context.ANGLE_STEP, angleStep != -1 ? angleStep : DEFAULT_ANGLE_STEP);
 
@@ -314,6 +333,9 @@ public class Elses {
         sb.append(formatHelpMessage("--x-position,-x INITIAL_X_POSITION", "The initial x position from which to begin drawing. The default is 150 (the center point for a landscape-oriented A3 paper."));
         sb.append(formatHelpMessage("--y-position,-y INITIAL_Y_POSITION", "The initial y position from which to begin drawing. The default is 25."));
         sb.append(formatHelpMessage("--dot-radius,-r DOT_RADIUS", "The radius of the circle drawn by a '@' command. If no radius is selected, a default radius of 1/2 of the current line length will be used."));
+        sb.append(formatHelpMessage("--width,-w WIDTH", "Sets the width of the draw-able page to the provided value. The default is 291 as this matches the width of an A3 paper in portrait mode."));
+        sb.append(formatHelpMessage("--height HEIGHT", "Sets the height of the draw-able page to the provided value. The default is 420 as this matches the height of an A3 paper in portrait mode."));
+
 
 
         System.out.println(sb.toString());

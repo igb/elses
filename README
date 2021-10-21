@@ -65,6 +65,14 @@ Options:
                                 If no radius is selected, a default radius of
                                 1/2 of the current line length will be used.
 
+--width,-w WIDTH      Sets the width of the draw-able page to the provided
+                      value. The default is 291 as this matches the width of an
+                      A3 paper in portrait mode.
+
+--height HEIGHT      Sets the height of the draw-able page to the provided
+                     value. The default is 420 as this matches the height of an
+                     A3 paper in portrait mode.
+
 
 
 
