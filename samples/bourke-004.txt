@@ -1,0 +1,2 @@
+AXIOM: F
+F -> F[+FF][-FF]F[-F][+F]F

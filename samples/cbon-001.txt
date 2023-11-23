@@ -1,0 +1,4 @@
+AXIOM: F
+F->[++FF+F@]G[--F][+F]-F
+G->FAGF
+A->[++FFG][-F]+F

@@ -1,0 +1,4 @@
+AXIOM: A
+A -> FFB[-FFA][+FFB]FFFF
+B -> FF-[++FFFC][-FFC]
+C -> -[F]-[F]-[F]-[F]-[F]-[F]-[F]-[F]-[F]-[F]
