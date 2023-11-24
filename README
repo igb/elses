@@ -78,7 +78,19 @@ Options:
 
 Example:
 
-java -cp dist org.hccp.elses.Elses -i 2 -a 10 -r 5 -l 25 -x 150 -y 50 samples/test-003.txt /tmp/lsys-plot.svg
+For a file, test-003.txt, that cntains the following content:
+
+    AXIOM: F
+    F -> FF[[-FFF@]++FF@]
+
+You can run the following command:
+    java -cp dist org.hccp.elses.Elses -i 2 -a 10 -r 5 -l 25 -x 150 -y 50 samples/test-003.txt /tmp/lsys-plot.svg
+
+in order to generate an SVG like this:
+
+![Alt text](./samples/test-003.svg)
+
+
 
 
 
