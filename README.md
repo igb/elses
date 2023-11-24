@@ -5,20 +5,20 @@ A Java-based implementation of an L-System generator.
 
 An example L-System "program":
 
-AXIOM: F
-F -> FF[[-FFF@]++FF@]
+   AXIOM: F
+   F -> FF[[-FFF@]++FF@]
 
 
 Supported instructions:
 
 
-F	  move pen forward and draw a line
-f	  move pen forward w/o drawing a line
-+	  turn left by default degrees
--	  turn right by default degrees
-[	  push current state (x/y position, angle) on to the context stack
-]	  pop context from stack and discard/replace current state (x/y postion, angle)
-@	  draw a 'dot' with a specified radius (default is 1/2 current line length) 
+	  F	  move pen forward and draw a line
+	  f	  move pen forward w/o drawing a line
+	  +	  turn left by default degrees
+	  -	  turn right by default degrees
+	  [	  push current state (x/y position, angle) on to the context stack
+	  ]	  pop context from stack and discard/replace current state (x/y postion, angle)
+	  @	  draw a 'dot' with a specified radius (default is 1/2 current line length) 
 
 To build the Elses interpreter using Ant:
 
