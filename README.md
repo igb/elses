@@ -88,7 +88,7 @@ You can run the following command:
 
 in order to generate an SVG like this:
 
-![Alt text](./samples/test-003.svg)
+<img src="./samples/test-003.svg"/>
 
 
 
