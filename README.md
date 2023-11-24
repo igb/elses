@@ -88,7 +88,7 @@ You can run the following command:
 
 in order to generate an SVG like this:
 
-<img src="./samples/test-003.svg" width="50%" height="50%"/>
+<img src="./samples/test-003.svg"/>
 
 
 
