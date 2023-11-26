@@ -12,17 +12,19 @@
     <target name="clean" depends="init">
         <delete dir="${dist.dir}"/>
         <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${lib.dir}"/>
+        <mkdir dir="${libext.dir}"/>
     </target>
 
     <target name="build" depends="clean">
 
         <javac srcdir="${src.dir}" destdir="${dist.dir}" debug="on">
-<!--
+
             <classpath>
                <fileset dir="${lib.dir}">
                    <include name="**/*.jar"/>
                </fileset>
-            </classpath> -->
+            </classpath>
         </javac>
     </target>
 
@@ -67,7 +69,17 @@
         </junit>
 
     </target>
-
+    <target name="jar" depends="build">
+        <jar file="${dist.dir}/elses.jar">
+            <fileset dir="${lib.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${dist.dir}">
+                <include name="**/*.class"/>
+                <include name="**/*.sh"/>
+            </fileset>
+        </jar>
+    </target>
 
     <target name="dist" depends="build">
         <zip file="elses.zip">
@@ -81,4 +93,8 @@
         </zip>
     </target>
 
+    <target name="native-image" depends="jar">
+       <mkdir dir="${dist.dir}/${os.arch}"/>
+        <exec command="native-image -cp ${dist.dir}/elses.jar org.hccp.elses.Elses  ${dist.dir}/${os.arch}/elses"/>
+    </target>
     </project>
