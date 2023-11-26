@@ -81,9 +81,9 @@ java -cp dist org.hccp.elses.Elses <options> <lsys-program-input-file> <output-f
 
 
 
-### Example:
+### Examples:
 
-For a file, test-003.txt, that cntains the following content:
+For a file, test-003.txt, that contains the following content:
 
     AXIOM: F
     F -> FF[[-FFF@]++FF@]
@@ -96,6 +96,19 @@ in order to generate an SVG like this:
 
 <img src="./samples/test-003.svg"/>
 
+#### A Koch curve
+
+Program:
+
+     AXIOM: F
+     F -> F+F-F-F+F
+
+Command line:
+
+	elses -i 3 -l 10 -a 90 --width 300 --height 200 -x 200 -y -40 --rotation 90 samples/koch.txt samples/koch.svg
+
+
+<img src="./samples/koch.svg"/>
 Credits:
 
 A bunch of the parsing code and structure is derived from Lox and Robert Nystrom's wonderful book "Crafting Interpreters".
