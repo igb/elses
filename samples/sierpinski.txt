@@ -1,0 +1,3 @@
+AXIOM: F-F-F
+F -> F-f+F+f-F
+f -> ff

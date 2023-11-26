@@ -66,6 +66,9 @@ java -cp dist org.hccp.elses.Elses <options> <lsys-program-input-file> <output-f
 	--y-position,-y INITIAL_Y_POSITION      The initial y position from which to
         	                                begin drawing. The default is 25.
 
+	--rotation ROTATION      The number of degrees to rotate the drawing after
+                         initial rendering.
+
 	--dot-radius,-r DOT_RADIUS      The radius of the circle drawn by a '@' command.
         	                        If no radius is selected, a default radius of
                 	                1/2 of the current line length will be used.
@@ -109,6 +112,21 @@ Command line:
 
 
 <img src="./samples/koch.svg"/>
+
+#### A Sierpinski triangle
+
+Program:
+
+	AXIOM: F-F-F
+	F -> F-f+F+f-F
+	f -> ff
+
+Command line: 
+
+	elses -i 4 -a 120 --width 200 --height 200 -x 70 -y 50 --rotation -150 samples/sierpinski.txt samples/sierpinski.svg
+
+<img src="./samples/sierpinski.svg"/>
+
 Credits:
 
 A bunch of the parsing code and structure is derived from Lox and Robert Nystrom's wonderful book "Crafting Interpreters".
