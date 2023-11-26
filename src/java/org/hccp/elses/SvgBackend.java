@@ -20,6 +20,10 @@ public class SvgBackend extends Backend {
                 "   viewBox=\"0 0 " + context.get(Context.WIDTH) + " " + context.get(Context.HEIGHT) + "\"\n" +
                 "   version=\"1.1\"" +
                 ">\n");
+
+        // set up the wrapping group to add a container that will support transforms, etc.
+        outputBuffer.append("<g id=\"elses-001\">\n");
+
         for (int i = 0; i < ilr.size(); i++) {
             Expr.Literal instruction = ilr.get(i);
             if (instruction.value instanceof TokenType) {
@@ -86,7 +90,7 @@ public class SvgBackend extends Backend {
 
 
         }
-
+        outputBuffer.append("</g>\n");
         outputBuffer.append("</svg>\n");
 
 
