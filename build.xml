@@ -17,12 +17,12 @@
     <target name="build" depends="clean">
 
         <javac srcdir="${src.dir}" destdir="${dist.dir}" debug="on">
-
+<!--
             <classpath>
                <fileset dir="${lib.dir}">
                    <include name="**/*.jar"/>
                </fileset>
-            </classpath>
+            </classpath> -->
         </javac>
     </target>
 
