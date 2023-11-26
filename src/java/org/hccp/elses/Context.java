@@ -13,6 +13,7 @@ public class Context {
     public static final String LINE_LENGTH = "line-length";
     public static final String CURRENT_X_POS = "current-x-position";
     public static final String CURRENT_Y_POS = "current-y-position";
+    public static final String ROTATION = "rotation";
     public static final String ITERATIONS = "iterations";
     public static final String DOT_RADIUS = "dot-radius";
     public static final String ARGUMENT_STRING = "argument-string";

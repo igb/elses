@@ -43,6 +43,8 @@ public class Elses {
 
         double initialXPosition=-1;
         double initialYPosition=-1;
+        double rotation=0.0;
+
         double dotRadius=-1;
         int iterations=-1;
         String source=null;
@@ -85,6 +87,9 @@ public class Elses {
                 case "--y-position":
                 case "-y":
                     initialYPosition = Double.parseDouble(args[++i]);
+                    break;
+                case "--rotation":
+                    rotation = Double.parseDouble(args[++i]);
                     break;
                 case "--dot-radius":
                 case "-r":
@@ -154,7 +159,7 @@ public class Elses {
         context.set(Context.CURRENT_X_POS, initialXPosition != -1 ? initialXPosition : DEFAULT_X_POSITION);
         context.set(Context.CURRENT_Y_POS, initialYPosition != -1 ? initialYPosition : DEFAULT_Y_POSITION);
         context.set(Context.DOT_RADIUS, dotRadius != -1 ? dotRadius : lineLength != -1 ? lineLength : DEFAULT_LINE_LENGTH / 2);
-
+        context.set(Context.ROTATION, rotation);
 
         context.set(Context.ITERATIONS, iterations);
         context.set(Context.ARGUMENT_STRING, argumentString);
@@ -332,6 +337,7 @@ public class Elses {
                 " For example the argument -l 2-10 would allow the interpreter to choose values between 2 and 10 at each step. If no line length is specified, a default line length of 10 will be used."));
         sb.append(formatHelpMessage("--x-position,-x INITIAL_X_POSITION", "The initial x position from which to begin drawing. The default is 150 (the center point for a landscape-oriented A3 paper."));
         sb.append(formatHelpMessage("--y-position,-y INITIAL_Y_POSITION", "The initial y position from which to begin drawing. The default is 25."));
+        sb.append(formatHelpMessage("--rotation ROTATION", "The number of degrees to rotate the drawing after initial rendering."));
         sb.append(formatHelpMessage("--dot-radius,-r DOT_RADIUS", "The radius of the circle drawn by a '@' command. If no radius is selected, a default radius of 1/2 of the current line length will be used."));
         sb.append(formatHelpMessage("--width,-w WIDTH", "Sets the width of the draw-able page to the provided value. The default is 291 as this matches the width of an A3 paper in portrait mode."));
         sb.append(formatHelpMessage("--height HEIGHT", "Sets the height of the draw-able page to the provided value. The default is 420 as this matches the height of an A3 paper in portrait mode."));

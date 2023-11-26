@@ -22,7 +22,9 @@ public class SvgBackend extends Backend {
                 ">\n");
 
         // set up the wrapping group to add a container that will support transforms, etc.
-        outputBuffer.append("<g id=\"elses-001\">\n");
+        outputBuffer.append("<g id=\"elses-001\"");
+        outputBuffer.append(" transform=\"rotate(" + context.get(Context.ROTATION) + ", " +  ((double)context.get(Context.WIDTH) / 2) + ", " + ((double)context.get(Context.HEIGHT) / 2) + ")\" ");
+        outputBuffer.append(">\n");
 
         for (int i = 0; i < ilr.size(); i++) {
             Expr.Literal instruction = ilr.get(i);
