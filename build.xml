@@ -97,4 +97,45 @@
        <mkdir dir="${dist.dir}/${os.arch}"/>
         <exec command="native-image -cp ${dist.dir}/elses.jar org.hccp.elses.Elses  ${dist.dir}/${os.arch}/elses"/>
     </target>
+
+    <target name="package-deb" depends="native-image">
+
+        <property name="deb.dir" value="${dist.dir}/${os.arch}/elses_${elses.version}_${os.arch}"/>
+        <property name="deb.install.path" value="/usr/local/bin"/>
+        <property name="deb.debian.dir" value="${deb.dir}/DEBIAN"/>
+        <property name="deb.debian.control" value="${deb.debian.dir}/control"/>
+        <property name="deb.debian.postinst" value="${deb.debian.dir}/postinst"/>
+        <mkdir dir="${deb.dir}"/>
+        <mkdir dir="${deb.dir}${deb.install.path}"/>
+        <mkdir dir="${deb.debian.dir}"/>
+
+        <touch file="${deb.debian.control}"/>
+        <echo file="${deb.debian.control}" message="Package: elses${line.separator}"/>
+        <echo file="${deb.debian.control}" append="true" message="Version: ${elses.version}${line.separator}" />
+        <echo file="${deb.debian.control}" append="true" message="Architecture: ${os.arch}${line.separator}" />
+        <echo file="${deb.debian.control}" append="true" message="Maintainer: Ian Brown &lt;igb@hccp.org&gt;${line.separator}" />
+        <echo file="${deb.debian.control}" append="true" message="Description: An L-System generator.${line.separator}" />
+
+        <copy file="${dist.dir}/${os.arch}/elses" todir="${deb.dir}${deb.install.path}"/>
+
+
+        <touch file="${deb.debian.postinst}"/>
+        <echo file="${deb.debian.postinst}">if [ "$1" = "configure" ]; then</echo>
+        <echo file="${deb.debian.postinst}" append="true" message="${line.separator}  chmod ugo+x ${deb.install.path}/elses${line.separator}"/>
+        <echo file="${deb.debian.postinst}" append="true">fi</echo>
+
+        <exec dir="${deb.debian.dir}" command="chmod">
+            <arg value="755"/>
+            <arg value="postinst"/>
+        </exec>
+
+        <exec dir="${dist.dir}/${os.arch}" command="dpkg-deb">
+            <arg value="--build"/>
+            <arg value="--root-owner-group"/>
+            <arg value="elses_${elses.version}_${os.arch}"/>
+        </exec>
+
+
+
+    </target>
     </project>
