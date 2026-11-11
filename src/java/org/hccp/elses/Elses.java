@@ -6,7 +6,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Elses {
@@ -241,7 +241,7 @@ public class Elses {
     public static List<Expr> parse(List<Token> tokens) {
         Parser parser = new Parser(tokens);
 
-        List<Expr> expressions = new LinkedList<Expr>();
+        List<Expr> expressions = new ArrayList<Expr>();
 
         boolean x = true;
 
@@ -273,7 +273,7 @@ public class Elses {
     }
 
     private static List<Rule> compileRules(Iterator<Expr> iterator) {
-        List<Rule> rules = new LinkedList<>();
+        List<Rule> rules = new ArrayList<>();
         while (iterator.hasNext()) {
             Expr next = iterator.next();
             if (next instanceof Expr.Binary) {
@@ -292,10 +292,10 @@ public class Elses {
     }
 
     protected static List literalListToList(Expr.LiteralList literalList) {
-        return literalListToList(literalList, new LinkedList<Expr.Literal>());
+        return literalListToList(literalList, new ArrayList<Expr.Literal>());
     }
 
-    private static List literalListToList(Expr.LiteralList literalList, LinkedList<Expr.Literal> list) {
+    private static List literalListToList(Expr.LiteralList literalList, ArrayList<Expr.Literal> list) {
         list.add(literalList.head);
         if (literalList.tail == null) {
             return list;
