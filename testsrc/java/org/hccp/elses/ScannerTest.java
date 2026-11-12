@@ -13,6 +13,8 @@ public class ScannerTest {
     public static final String SOURCE_002 = "AXIOM: X\n" +
             "F->FF\n" +
             "X->F-[[X]+X]+F[+FX]-X\n";
+    public static final String SOURCE_003 = "\n\nAXIOM: F\nF -> FF\n";
+    public static final String SOURCE_004 = "AXIOM: F\nF -> FF"; // same as SOURCE_001 but with no trailing newline
 
     @Test
     public void testScanTokens001() {
@@ -42,6 +44,37 @@ public class ScannerTest {
 
 
     }
+
+
+    
+    @Test
+    public void testScanTokens004() {
+
+        TokenType tokenTypes [] = {
+                TokenType.AXIOM,
+                TokenType.COLON,
+                TokenType.FORWARD,
+                TokenType.NEWLINE,
+                TokenType.FORWARD,
+                TokenType.THEN,
+                TokenType.FORWARD,
+                TokenType.FORWARD,
+                TokenType.EOF
+        };
+
+
+
+        List<Token> testTokens =  createTokens(tokenTypes);
+
+
+
+        Scanner s = new Scanner(SOURCE_004);
+        List<Token> tokens = s.scanTokens();
+        testScannedTokens(testTokens, tokens);
+
+
+    }
+
 
     private void testScannedTokens(List<Token> testTokens, List<Token> tokens) {
         assertEquals("Expected same number of tokens.", testTokens.size(), tokens.size());

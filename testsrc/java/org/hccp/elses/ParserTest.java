@@ -12,8 +12,18 @@ public class ParserTest {
 
     @Test
     public void testParsing001() {
+	testParsing(ScannerTest.SOURCE_001);
+    }
 
-        Scanner s = new Scanner(ScannerTest.SOURCE_001);
+    
+    @Test
+    public void testParsing004() {
+	testParsing(ScannerTest.SOURCE_004);
+    }
+
+
+    public void testParsing(String source) {
+        Scanner s = new Scanner(source);
         List<Token> tokens = s.scanTokens();
         List<Expr> exprs = Elses.parse(tokens);
         assertEquals("Expected 2 expressions.", 2, exprs.size());

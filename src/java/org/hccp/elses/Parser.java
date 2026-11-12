@@ -85,7 +85,7 @@ public class Parser {
     }
 
     private Expr list() {
-        return new Expr.LiteralList((Expr.Literal) primary(), match(NEWLINE,COLON, THEN) ? null : (Expr.LiteralList) list());
+        return new Expr.LiteralList((Expr.Literal) primary(), match(NEWLINE,COLON, THEN) || isAtEnd() ? null : (Expr.LiteralList) list());
     }
 
     private Expr primary() {
