@@ -25,8 +25,12 @@ public class Elses {
     private static final double DEFAULT_WIDTH = 291.0;
 
     public static void main(String[]args) throws Exception {
-        String argumentString = reconstructArgumentString(args);
 
+
+	String argumentString = reconstructArgumentString(args);
+	int positionals=0;
+
+	
         int angleStep=-1;
         int angleStepLowerLimit = -1;
         int angleStepUpperLimit = -1;
@@ -115,13 +119,14 @@ public class Elses {
                 default: // the only two naked or un-flagged parameters are source and outfile and specific order is set/expected
 		    if (arg.startsWith("-")) {
 			throw new IllegalArgumentException("Unrecognized argument: " + arg);
-		    } else if (source == null) {
-                        source=args[i];
-		    } else if (i == (args.length - 1)) {
-                        outputFile=args[i];
+		    }
+
+		    if (++positionals == 1) {
+                        source=arg;
+		    } else if (positionals == 2) {
+                        outputFile=arg;
 		    } else {
-			throw new IllegalArgumentException("Too many arguments: more than 2 positionals.");
-			
+			throw new IllegalArgumentException("Too many arguments: more than 2 positionals.");			
 		    }
 	    }
         }

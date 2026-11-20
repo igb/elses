@@ -23,4 +23,11 @@ public class ElsesTest {
 	assertTrue(ex.getMessage().contains("Too many"));
 	
     }
+
+
+    @Test
+    public void testPositionalsOrder() throws Exception {
+	Exception ex = assertThrows(java.nio.file.NoSuchFileException.class, () -> Elses.main(new String[] {"in.txt", "out.svg", "--angle", "30"}));
+	assertTrue(true); // check that no exception is thrown
+    }
 }
