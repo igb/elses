@@ -49,7 +49,9 @@ public class Elses {
         int iterations=-1;
         String source=null;
         String outputFile=null;
-        if (args.length == 0) {
+
+
+	if (args.length == 0) {
             runPrompt();
             System.exit(0);
         }
@@ -111,15 +113,20 @@ public class Elses {
                     printHelpMessage();
                     System.exit(0);
                 default: // the only two naked or un-flagged parameters are source and outfile and specific order is set/expected
-                    if (source == null) {
+		    if (arg.startsWith("-")) {
+			throw new IllegalArgumentException("Unrecognized argument: " + arg);
+		    } else if (source == null) {
                         source=args[i];
-                    } else {
+		    } else if (i == (args.length - 1)) {
                         outputFile=args[i];
-                    }
-            }
+		    } else {
+			throw new IllegalArgumentException("Too many arguments: more than 2 positionals.");
+			
+		    }
+	    }
         }
-
-
+	
+	
 
 
         Context context = new Context();
